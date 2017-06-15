@@ -1,0 +1,7 @@
+log/*.log
+data/*.*
+conf/*.ovpn
+conf/__pycache__/
+conf/my_env*
+*.pyc
+.ropeproject/
