@@ -13,7 +13,7 @@ num = envi['log_rotate_num']
 size = envi['log_size']
 FM = '%(asctime)s %(filename)s %(lineno)d %(levelname)s %(message)s'
 DF = '%Y-%m-%d %H:%M:%S'
-# 定义RotatingFileHandler，最多备份5个日志文件，每个日志文件5M
+# 定义RotatingFileHandler，最多备份(num)个日志文件，每个日志文件(size)MB
 RH = RotatingFileHandler(File1, 'a', size*1024*1024, num)
 RH.setLevel(logging.DEBUG)
 RH.setFormatter(logging.Formatter(FM, DF))

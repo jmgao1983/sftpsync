@@ -29,7 +29,7 @@ def send_mail(sub, content):
         logger.error(str(e))
         return False
     else:
-        logger.info('Success sending mail [' + sub + '] to ' + str(receiver))
+        logger.info('success sending mail [' + sub + '] to ' + str(receiver))
         return True
 
 if __name__ == '__main__':

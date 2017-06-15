@@ -43,14 +43,14 @@ class sftp_sync(object):
             # transfar via sftp get
             if self.trans_files == []:
                 logger.warn('no data to pull')
-                send_mail(u'车满满数据未更新', u'请咨询车满满技术')
+                send_mail(u'服务端数据未更新', u'请咨询数据提供技术人员')
             else:
                 for f in self.trans_files:
                     sftp.get(rdir + f, self.ldir + f)
                 logger.info('pulling from cmm finished')
         except Exception as e:
             logger.error(str(e))
-            send_mail(u'自动同步车满满数据失败', str(e))
+            send_mail(u'自动同步数据失败', str(e))
             return False
         target.close()
         return True
@@ -74,10 +74,10 @@ class sftp_sync(object):
             logger.info('pushing to prd finished')
         except Exception as e:
             logger.error(str(e))
-            send_mail(u'自动同步车满满数据失败', str(e))
+            send_mail(u'自动同步数据失败', str(e))
             return False
         target.close()
-        send_mail(u'自动同步车满满数据成功', u'some thing')
+        send_mail(u'自动同步数据成功', u'请使用md5文件校验数据文件*.tar.gz')
         return True
 
 if __name__ == '__main__':

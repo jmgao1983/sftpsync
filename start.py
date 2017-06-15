@@ -6,7 +6,6 @@ import time
 from my_log import logger
 from my_sftp import sftp_sync
 from conf.my_env import envi
-# from my_mail import send_mail
 
 
 def start():
