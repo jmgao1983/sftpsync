@@ -27,6 +27,7 @@ class sftp_sync(object):
         port = envi['cmm_sftp_port']
         usr = envi['cmm_sftp_user']
         pwd = envi['cmm_sftp_pass']
+        src = envi['data_src_name']
         rdir = envi['cmm_data_dir']
         p = envi['cmm_data_pattern']
         try:
@@ -43,14 +44,14 @@ class sftp_sync(object):
             # transfar via sftp get
             if self.trans_files == []:
                 logger.warn('no data to pull')
-                send_mail(u'服务端数据未更新', u'请咨询数据提供技术人员')
+                send_mail(src + u'未更新', u'请咨询数据提供技术人员')
             else:
                 for f in self.trans_files:
                     sftp.get(rdir + f, self.ldir + f)
                 logger.info('pulling from cmm finished')
         except Exception as e:
             logger.error(str(e))
-            send_mail(u'自动同步数据失败', str(e))
+            send_mail(src + u'自动同步失败', str(e))
             return False
         target.close()
         return True
@@ -63,6 +64,7 @@ class sftp_sync(object):
         port = envi['prd_sftp_port']
         usr = envi['prd_sftp_user']
         pwd = envi['prd_sftp_pass']
+        src = envi['data_src_name']
         rdir = envi['prd_data_dir']
         try:
             target = paramiko.Transport((ip, port))
@@ -74,10 +76,10 @@ class sftp_sync(object):
             logger.info('pushing to prd finished')
         except Exception as e:
             logger.error(str(e))
-            send_mail(u'自动同步数据失败', str(e))
+            send_mail(src + u'自动同步失败', str(e))
             return False
         target.close()
-        send_mail(u'自动同步数据成功', u'请使用md5文件校验数据文件*.tar.gz')
+        send_mail(src + u'自动同步成功', u'请使用md5文件校验数据文件*.tar.gz')
         return True
 
 if __name__ == '__main__':

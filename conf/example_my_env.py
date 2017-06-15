@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # CRITICAL=50> ERROR=40> WARNING=30> INFO=20> DEBUG=10> NOTSET=0
 # Important: directories here must end with '/'
 envi = {
@@ -11,6 +14,7 @@ envi = {
   'cmm_sftp_user': 'user',
   'cmm_sftp_pass': 'pass',
   'cmm_data_dir': '/path/',
+  'data_src_name': u'xxxx数据',
   'cmm_data_pattern': 'some_[0-9]{14}\.((md5)|(tar\.gz))',
   # prd config
   'prd_sftp_ip': '2.2.2.2',
