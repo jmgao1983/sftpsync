@@ -1,3 +1,11 @@
+以ubuntu 16.04 为例  
+#0.安装paramiko模块
+  *pip install --upgrade pip*  
+  *pip install paramiko*  
+  如果安装失败，可能需要  
+  *apt-get install gcc*  
+  *apt-get install python-dev*  
+  *apt-get install libssl-dev*  
 #1.安装openvpn
   *apt-get install openvpn*  
   配置非root用户使用openvpn  
