@@ -13,7 +13,7 @@ envi = {
   'cmm_sftp_port': 22,
   'cmm_sftp_user': 'user',
   'cmm_sftp_pass': 'pass',
-  'cmm_data_dir': '/path/',
+  'cmm_data_dir': ['path1/', 'path2/', 'path3/'],
   'data_src_name': u'xxxx数据',
   'cmm_data_pattern': 'some_[0-9]{14}\.((md5)|(tar\.gz))',
   # prd config

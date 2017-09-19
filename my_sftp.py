@@ -18,9 +18,8 @@ class sftp_sync(object):
                 return False
         self.ldir = ldir
         self.loc_files = os.listdir(ldir)
-        self.cmm_files = []
         self.trans_files = []
-        logger.debug('loc files:' + str(self.loc_files))
+        #logger.debug('loc files:' + str(self.loc_files))
 
     def pull_from_cmm(self):
         ip = envi['cmm_sftp_ip']
@@ -28,27 +27,26 @@ class sftp_sync(object):
         usr = envi['cmm_sftp_user']
         pwd = envi['cmm_sftp_pass']
         src = envi['data_src_name']
-        rdir = envi['cmm_data_dir']
         p = envi['cmm_data_pattern']
         try:
             target = paramiko.Transport((ip, port))
             target.connect(username=usr, password=pwd)
             sftp = paramiko.SFTPClient.from_transport(target)
-            self.cmm_files = sftp.listdir(rdir)
-            logger.debug('cmm files:' + str(self.cmm_files))
-            # check out which files to transfar
-            for f in self.cmm_files:
-                if f not in self.loc_files and re.match(p, f) != None:
-                    self.trans_files.append(f)
-            logger.debug('need files:' + str(self.trans_files))
-            # transfar via sftp get
+            logger.debug("connect to cmm's sftp server")
+            # to find files for transfaring
+            for rdir in envi['cmm_data_dir']:
+                for f in sftp.listdir(rdir):
+                    if f not in self.loc_files and re.match(p, f) != None:
+                        self.trans_files.append(f)
+                        # transfar via sftp get
+                        sftp.get(rdir + f, self.ldir + f)
+                        logger.debug('file: <' + str(f) + '> transfared')
+           
             if self.trans_files == []:
                 logger.warn('no data to pull')
                 send_mail(src + u'未更新', u'请咨询数据提供技术人员')
             else:
-                for f in self.trans_files:
-                    sftp.get(rdir + f, self.ldir + f)
-                logger.info('pulling from cmm finished')
+                logger.info('pulling finished: ' + str(self.trans_files))
         except Exception as e:
             logger.error(str(e))
             send_mail(src + u'自动同步失败', str(e))
