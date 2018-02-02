@@ -14,18 +14,21 @@ def start():
     vpn_log = envi['cwd'] + 'log/vpn.log'
     vpn_conf = envi['cwd'] + 'conf/client.ovpn'
     cmd = 'openvpn --config %s > %s 2>&1 &' % (vpn_conf, vpn_log)
-    os.system(cmd)
-    time.sleep(30)
-    logger.debug('step 1: pull data from cmm')
-    sync = sftp_sync()
-    if sync.pull_from_cmm():
-        logger.debug('step 2: stop the vpn tunnel')
+    try:
+        os.system(cmd)
+        time.sleep(30)
+        sync = sftp_sync()
+        if sync is not None:
+            logger.debug('step 1: pull data from cmm')
+            if sync.pull_from_cmm():
+                logger.debug('step 2: push data to prd')
+                sync.push_to_prd()
+    finally:
+        logger.debug('step 3: stop the vpn tunnel')
         cmd = "kill `ps -ef|grep openvpn|grep -v 'grep'|awk '{print $2}'`"
         os.system(cmd)
         time.sleep(10)
-        logger.debug('step 3: push data to prd')
-        sync.push_to_prd()
-    logger.debug('Program end')
+        logger.debug('Program end')
 
 if __name__ == '__main__':
     start()
